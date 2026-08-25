@@ -20,7 +20,9 @@ export default function Home() {
   const [editingId,setEditingId] =useState<string| null>(null);
   const [editText, setEditText] = useState("");
 
-  const[filter, setFilter] = useState("all")
+  const[filter, setFilter] = useState("all");
+
+  const[SearchQerty, setSearchQuerty] = useState("");
 
   const [darkMode, setDarkMode] = useState(false);
   useEffect(()=>{
@@ -76,12 +78,15 @@ export default function Home() {
     if (filter ==="active") return !goal.completed;
     if (filter ==="completed") return goal.completed;
     return true;
-  });
+    })
+     .filter(goal =>
+                goal.text.toLowerCase().includes(SearchQerty.toLocaleLowerCase())
+      );
+
   return (
      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center pt-10 px-4 transition-colors duration-300" >
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full max-w-md transition-colors duration-300">
           
-          {/* Шапка */}
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Мой список целей</h1>
             <button
@@ -91,7 +96,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Форма добавления */}
           <div className="flex flex-col sm:flex-row gap-2 mb-6 w-full">
               <input 
                 type="text" 
@@ -134,12 +138,23 @@ export default function Home() {
             ))}
           </div>
 
+          <input 
+          type = "text"
+          placeholder="поиск целей"
+          value={SearchQerty}
+          onChange={(e)=>setSearchQuerty(e.target.value)}
+          className="w-full min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-2 mb-4 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer" >
+          </input>
+
           <ul>
             {[...goals].filter((goal)=> {
                 if (filter === "active") return !goal.completed;
                 if (filter === "completed") return goal.completed;
                 return true;
               })
+              .filter(goal =>
+                goal.text.toLowerCase().includes(SearchQerty.toLocaleLowerCase())
+              )
               .sort((a,b)=> Number(a.completed)-Number(b.completed))
               .map((goal)=>(
               <li key={goal.id} className="text-gray-700 dark:text-gray-200 py-2 border-b border-gray-100 dark:border-gray-700 last:border-none flex justify-between items-center group gap-2">
@@ -201,10 +216,14 @@ export default function Home() {
           </ul>
 
           <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 text-right">
-            {filter === "all" && "Всего целей: "}
-            {filter === "active" && "Активных целей: "}
-            {filter === "completed" && "Выполненных целей: "}
-            <span className="font-bold text-gray-700 dark:text-gray-200">{filteredGoals.length}</span>
+             {SearchQerty ? "Найдено целей: ":(
+              <>
+                {filter === "all" && "Всего целей: "}
+                {filter === "active" && "Активных целей: "}
+                {filter === "completed" && "Выполненных целей: "}
+              </>
+             )}
+              <span className="font-bold text-gray-700 dark:text-gray-200">{filteredGoals.length}</span>
           </div>
         </div>
      </div>
