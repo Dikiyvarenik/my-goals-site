@@ -1,5 +1,6 @@
 "use client";
 import {useState,useEffect} from "react";
+import confetti from "canvas-confetti";
 
 interface Goal{
   id:string;
@@ -46,6 +47,22 @@ export default function Home() {
     localStorage.setItem("saved_goals",JSON.stringify(goals));
   },[goals]);
 
+  useEffect(()=>{
+    if(!isLoaded || goals.length===0) return;
+    const hasActiveGoals = goals.some(goal=> !goal.completed);
+    if (!hasActiveGoals){
+      confetti({
+        particleCount:250,
+        spread:80,
+        origin: {y:0.6}
+      });
+      const audioAll = new Audio("\completedAll.mp3");
+      audioAll.volume = 0.4;
+      audioAll.play().catch(()=>{})
+      
+    }
+  },[goals,isLoaded]);
+
   const addGoal = () =>{
     if (inputText.trim()=== "") return;
     const inputTextCon = {id: crypto.randomUUID(),text:inputText,completed:false,deadline: inputDeadline? inputDeadline:undefined};
@@ -57,9 +74,18 @@ export default function Home() {
     setGoals(goals.filter((goal) => goal.id !== idToDelete));
   }
   const toggleGoal =(idToToggle:string)=>{
-    setGoals(goals.map((goal)=>
-      goal.id === idToToggle ? {...goal, completed:!goal.completed}: goal
-    ));
+    setGoals(goals.map((goal)=>{
+      if (goal.id === idToToggle){
+        const nextCompleted = !goal.completed;
+        if(nextCompleted){
+          const audio = new Audio("\completed.mp3");
+          audio.volume = 0.4;
+          audio.play().catch(()=> {});
+        }
+        return{...goal,completed:nextCompleted};
+      }
+      return goal;
+  }));
   };
   const startEdit = (id:string,currentText:string)=>{
     setEditingId(id);
@@ -82,7 +108,9 @@ export default function Home() {
      .filter(goal =>
                 goal.text.toLowerCase().includes(SearchQerty.toLocaleLowerCase())
       );
-
+    const deleteAllGoal= () =>{
+      setGoals(goals.filter(goal=> !goal.completed));
+    };
   return (
      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center pt-10 px-4 transition-colors duration-300" >
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full max-w-md transition-colors duration-300">
@@ -112,6 +140,7 @@ export default function Home() {
               </input>
               <input
               type="date"
+              placeholder="Дата"
               value={inputDeadline}
               onChange={(e)=> setInputDeadline(e.target.value)}
               className="flex-1 min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer"
@@ -214,6 +243,12 @@ export default function Home() {
               </li>
             ))}
           </ul>
+        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center w-full"> 
+          <button
+          onClick={()=> deleteAllGoal()} 
+          className="text-xs font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 px-3 py-1.5 rounded-lg transition active:scale-95 cursor-pointer">
+            Удалить выполненые
+          </button>
 
           <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 text-right">
              {SearchQerty ? "Найдено целей: ":(
@@ -225,6 +260,7 @@ export default function Home() {
              )}
               <span className="font-bold text-gray-700 dark:text-gray-200">{filteredGoals.length}</span>
           </div>
+        </div>
         </div>
      </div>
   );
