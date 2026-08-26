@@ -138,17 +138,19 @@ export default function Home() {
                 maxLength={350}
                 className="flex-[2] min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
               </input>
-              <input
-              type="text"
-              placeholder="дедлайн"
-              value={inputDeadline}
-              onFocus={(e)=>(e.target.type="date")}
-              onBlur={(e)=>{
-                if (!e.target.value) e.target.type="text";
-              }}
-              onChange={(e)=> setInputDeadline(e.target.value)}
-              className="flex-1 min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer"
-              ></input>
+              <div className="relative flex-1 min-w-0">
+                <input
+                  type="date"
+                  value={inputDeadline}
+                  onChange={(e)=> setInputDeadline(e.target.value)}
+                  className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-sm cursor-pointer [color-scheme:light] dark:[color-scheme:dark] transition-colors
+                    ${inputDeadline ? "text-gray-700 dark:text-gray-200" : "text-transparent focus:text-gray-700 dark:focus:text-gray-200"   
+                  }`}> 
+                </input>
+                {!inputDeadline &&(
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">Дедлайн</span>
+                )}
+              </div>
               <button 
               className="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition shrink-0 cursor-pointer"
               onClick={addGoal}>
