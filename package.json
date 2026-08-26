@@ -9,13 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "14.x.x", 
-    "react": "^18.x.x",
-    "react-dom": "^18.x.x",
-    "canvas-confetti": "^1.6.0"
+    "canvas-confetti": "^1.9.4",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
