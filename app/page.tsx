@@ -143,7 +143,7 @@ export default function Home() {
                   value={inputDeadline}
                   title="дедлайн"
                   onChange={(e)=> setInputDeadline(e.target.value)}
-                  className="w-full sm:w-1/4 h-10 border border-gray-300 dark:border-gray-600 rounded-lg px-3 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer [color-scheme:light] dark:[color-scheme:dark] transition-colors">
+                  className="w-full sm:w-1/4 h-10 appearance-none border border-gray-300 dark:border-gray-600 rounded-lg px-3 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer [color-scheme:light] dark:[color-scheme:dark] transition-colors">
                 </input>
               <button 
               className="w-full sm:w-1/4 bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition shrink-0 cursor-pointer"
