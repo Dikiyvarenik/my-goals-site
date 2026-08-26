@@ -1,6 +1,6 @@
 "use client";
 import {useState,useEffect} from "react";
-import * as confetti from "canvas-confetti";
+import confetti from "canvas-confetti";
 
 interface Goal{
   id:string;
