@@ -139,9 +139,13 @@ export default function Home() {
                 className="flex-[2] min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
               </input>
               <input
-              type="date"
-              placeholder="Дата"
+              type="text"
+              placeholder="дедлайн"
               value={inputDeadline}
+              onFocus={(e)=>(e.target.type="date")}
+              onBlur={(e)=>{
+                if (!e.target.value) e.target.type="text";
+              }}
               onChange={(e)=> setInputDeadline(e.target.value)}
               className="flex-1 min-w-0 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-2 outline-none focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm cursor-pointer"
               ></input>
@@ -250,7 +254,7 @@ export default function Home() {
             Удалить выполненые
           </button>
 
-          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 text-right">
+          <div className="mt-4 border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 text-right">
              {SearchQerty ? "Найдено целей: ":(
               <>
                 {filter === "all" && "Всего целей: "}
