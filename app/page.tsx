@@ -1,6 +1,5 @@
 "use client";
 import {useState,useEffect} from "react";
-import confetti from "canvas-confetti";
 
 interface Goal{
   id:string;
@@ -46,23 +45,7 @@ export default function Home() {
     if (!isLoaded) return;
     localStorage.setItem("saved_goals",JSON.stringify(goals));
   },[goals]);
-
-  useEffect(()=>{
-    if(!isLoaded || goals.length===0) return;
-    const hasActiveGoals = goals.some(goal=> !goal.completed);
-    if (!hasActiveGoals){
-      confetti({
-        particleCount:250,
-        spread:80,
-        origin: {y:0.6}
-      });
-      const audioAll = new Audio("\completedAll.mp3");
-      audioAll.volume = 0.4;
-      audioAll.play().catch(()=>{})
-      
-    }
-  },[goals,isLoaded]);
-
+  
   const addGoal = () =>{
     if (inputText.trim()=== "") return;
     const inputTextCon = {id: crypto.randomUUID(),text:inputText,completed:false,deadline: inputDeadline? inputDeadline:undefined};
@@ -76,12 +59,6 @@ export default function Home() {
   const toggleGoal =(idToToggle:string)=>{
     setGoals(goals.map((goal)=>{
       if (goal.id === idToToggle){
-        const nextCompleted = !goal.completed;
-        if(nextCompleted){
-          const audio = new Audio("\completed.mp3");
-          audio.volume = 0.4;
-          audio.play().catch(()=> {});
-        }
         return{...goal,completed:nextCompleted};
       }
       return goal;
