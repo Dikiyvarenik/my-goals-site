@@ -56,14 +56,14 @@ export default function Home() {
   const deleteGoal =(idToDelete:string)=>{
     setGoals(goals.filter((goal) => goal.id !== idToDelete));
   }
-  const toggleGoal =(idToToggle:string)=>{
-    setGoals(goals.map((goal)=>{
-      if (goal.id === idToToggle){
-        return{...goal,completed:nextCompleted};
+  const toggleGoal = (idToToggle: string) => {
+    setGoals(goals.map((goal) => {
+      if (goal.id === idToToggle) {
+        return { ...goal, completed: !goal.completed };
       }
       return goal;
-  }));
-  };
+    }));
+};
   const startEdit = (id:string,currentText:string)=>{
     setEditingId(id);
     setEditText(currentText);
